@@ -1,0 +1,6 @@
+@charset "UTF-8";
+.box {
+  color: green;
+  font-size: 50px;
+  background: red;
+}
