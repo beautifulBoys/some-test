@@ -70,8 +70,8 @@
 "use strict";
 
 function init (name) {
-  __webpack_require__(7)(`./${name}/${name}.css`);
-  return __webpack_require__(13)(`./${name}/${name}.hml`);
+  __webpack_require__(6)(`./${name}/${name}.css`);
+  return __webpack_require__(12)(`./${name}/${name}.hml`);
 }
 /* harmony default export */ __webpack_exports__["a"] = (init);
 
@@ -205,7 +205,7 @@ var singleton = null;
 var	singletonCounter = 0;
 var	stylesInsertedAtTop = [];
 
-var	fixUrls = __webpack_require__(10);
+var	fixUrls = __webpack_require__(9);
 
 module.exports = function(list, options) {
 	if (typeof DEBUG !== "undefined" && DEBUG) {
@@ -525,24 +525,22 @@ function updateLink (link, options, obj) {
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__vue_vue_min_js__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__vue_vue_min_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__vue_vue_min_js__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__views_index_index_js__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__views_box_box_js__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__init__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__views_index_index_js__ = __webpack_require__(15);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__views_box_box_js__ = __webpack_require__(16);
 
 
 
 
+
+
+const html = Object(__WEBPACK_IMPORTED_MODULE_1__init__["a" /* default */])('index');
 
 new __WEBPACK_IMPORTED_MODULE_0__vue_vue_min_js___default.a({
-  template: `
-    <div>
-      <index-html></index-html>
-      <div>我是中间的分割线</div>
-      <box-html></box-html>
-    </div>
-  `,
+  template: html,
   components: {
-    'index-html': __WEBPACK_IMPORTED_MODULE_1__views_index_index_js__["a" /* default */],
-    'box-html': __WEBPACK_IMPORTED_MODULE_2__views_box_box_js__["a" /* default */]
+    'index-html': __WEBPACK_IMPORTED_MODULE_2__views_index_index_js__["a" /* default */],
+    'box-html': __WEBPACK_IMPORTED_MODULE_3__views_box_box_js__["a" /* default */]
   },
   el: '#app'
 });
@@ -590,35 +588,11 @@ module.exports = g;
 
 /***/ }),
 /* 6 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__init__ = __webpack_require__(0);
-
-
-
-const html = Object(__WEBPACK_IMPORTED_MODULE_0__init__["a" /* default */])('index');
-
-/* harmony default export */ __webpack_exports__["a"] = ({
-  template: html,
-  data () {
-    return {
-      text: '我是index组件的页面'
-    };
-  },
-  mounted () {
-    console.log('index组件初始化完成');
-  }
-});
-
-
-/***/ }),
-/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var map = {
-	"./box/box.css": 8,
-	"./index/index.css": 11
+	"./box/box.css": 7,
+	"./index/index.css": 10
 };
 function webpackContext(req) {
 	return __webpack_require__(webpackContextResolve(req));
@@ -634,16 +608,16 @@ webpackContext.keys = function webpackContextKeys() {
 };
 webpackContext.resolve = webpackContextResolve;
 module.exports = webpackContext;
-webpackContext.id = 7;
+webpackContext.id = 6;
 
 /***/ }),
-/* 8 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(9);
+var content = __webpack_require__(8);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -668,7 +642,7 @@ if(false) {
 }
 
 /***/ }),
-/* 9 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(1)(undefined);
@@ -682,7 +656,7 @@ exports.push([module.i, "@charset \"UTF-8\";\r\n.box {\r\n  color: green;\r\n  f
 
 
 /***/ }),
-/* 10 */
+/* 9 */
 /***/ (function(module, exports) {
 
 
@@ -777,13 +751,13 @@ module.exports = function (css) {
 
 
 /***/ }),
-/* 11 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(12);
+var content = __webpack_require__(11);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -808,7 +782,7 @@ if(false) {
 }
 
 /***/ }),
-/* 12 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(1)(undefined);
@@ -822,12 +796,12 @@ exports.push([module.i, "@charset \"UTF-8\";\r\n.index {\r\n  color: red;\r\n  f
 
 
 /***/ }),
-/* 13 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var map = {
-	"./box/box.hml": 14,
-	"./index/index.hml": 15
+	"./box/box.hml": 13,
+	"./index/index.hml": 14
 };
 function webpackContext(req) {
 	return __webpack_require__(webpackContextResolve(req));
@@ -843,7 +817,13 @@ webpackContext.keys = function webpackContextKeys() {
 };
 webpackContext.resolve = webpackContextResolve;
 module.exports = webpackContext;
-webpackContext.id = 13;
+webpackContext.id = 12;
+
+/***/ }),
+/* 13 */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"index\">{{text}}</div>\r\n";
 
 /***/ }),
 /* 14 */
@@ -853,9 +833,27 @@ module.exports = "<div class=\"index\">{{text}}</div>\r\n";
 
 /***/ }),
 /* 15 */
-/***/ (function(module, exports) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-module.exports = "<div class=\"index\">{{text}}</div>\r\n";
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__init__ = __webpack_require__(0);
+
+
+
+const html = Object(__WEBPACK_IMPORTED_MODULE_0__init__["a" /* default */])('index');
+
+/* harmony default export */ __webpack_exports__["a"] = ({
+  template: html,
+  data () {
+    return {
+      text: '我是index组件的页面'
+    };
+  },
+  mounted () {
+    console.log('index组件初始化完成');
+  }
+});
+
 
 /***/ }),
 /* 16 */

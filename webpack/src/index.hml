@@ -1,0 +1,5 @@
+<div>
+  <index-html></index-html>
+  <div>我是中间的分割线</div>
+  <box-html></box-html>
+</div>
