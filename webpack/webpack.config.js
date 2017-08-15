@@ -21,9 +21,14 @@ const config = {
             attrs: [':data-src']
           }
         }
+      },
+      {
+        test: /\.js$/,
+        loader: 'babel-loader'
       }
     ]
-  }
+  },
+  devtool: '#source-map'
 };
 
 module.exports = config;

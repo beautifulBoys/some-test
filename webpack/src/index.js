@@ -4,8 +4,8 @@ import init from './init';
 
 import indexHtml from './views/index/index.js';
 import boxHtml from './views/box/box.js';
-const html = init('index');
 
+const html = require('./index.hml');
 new Vue({
   template: html,
   components: {
