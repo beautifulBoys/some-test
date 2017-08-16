@@ -2814,9 +2814,6 @@ const html = Object(__WEBPACK_IMPORTED_MODULE_0__init__["a" /* default */])('ind
 
 
 const html = Object(__WEBPACK_IMPORTED_MODULE_0__init__["a" /* default */])('box');
-console.log(html);
-var a = document.getElementsByClassName('index');
-console.log(a);
 /* harmony default export */ __webpack_exports__["a"] = ({
   template: html,
   data() {
@@ -2826,7 +2823,11 @@ console.log(a);
   },
   mounted() {
     console.log('box组件初始化完成');
-  }
+    setTimeout(() => {
+      this.text = '我是box页修改后的值';
+    }, 2000);
+  },
+  methods: {}
 });
 
 /***/ }),

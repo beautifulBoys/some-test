@@ -2,9 +2,6 @@
 import init from '../../init';
 
 const html = init('box');
-console.log(html);
-var a = document.getElementsByClassName('index');
-console.log(a);
 export default {
   template: html,
   data () {
@@ -14,5 +11,11 @@ export default {
   },
   mounted () {
     console.log('box组件初始化完成');
+    setTimeout(() => {
+      this.text = '我是box页修改后的值';
+    }, 2000);
+  },
+  methods: {
+
   }
 };
