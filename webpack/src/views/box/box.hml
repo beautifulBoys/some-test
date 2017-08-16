@@ -1,1 +1,7 @@
 <div class="index">{{text}}</div>
+
+<style>
+  .index {
+    color: blue;
+  }
+</style>

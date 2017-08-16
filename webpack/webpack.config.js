@@ -7,6 +7,16 @@ const config = {
     filename: 'index.js',
     path: path.resolve(__dirname, './dist')
   },
+  devServer: {
+      filename: "index.html",
+      publicPath: "/dist/",
+      historyApiFallback: true,
+      hot: true,
+      inline: true,
+      progress: true,
+      console: true,
+      stats: {colors: true}
+  },
   module: {
     loaders: [
       {

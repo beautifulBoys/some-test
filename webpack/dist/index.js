@@ -2773,7 +2773,7 @@ webpackContext.id = 12;
 /* 13 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"index\">{{text}}</div>\r\n";
+module.exports = "<div class=\"index\">{{text}}</div>\r\n\r\n<style>\r\n  .index {\r\n    color: blue;\r\n  }\r\n</style>\r\n";
 
 /***/ }),
 /* 14 */
@@ -2814,7 +2814,9 @@ const html = Object(__WEBPACK_IMPORTED_MODULE_0__init__["a" /* default */])('ind
 
 
 const html = Object(__WEBPACK_IMPORTED_MODULE_0__init__["a" /* default */])('box');
-
+console.log(html);
+var a = document.getElementsByClassName('index');
+console.log(a);
 /* harmony default export */ __webpack_exports__["a"] = ({
   template: html,
   data() {

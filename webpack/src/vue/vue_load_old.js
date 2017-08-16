@@ -1,0 +1,203 @@
+var loaderUtils = require('loader-utils')
+var assign = require('object-assign')
+var selectorPath = require.resolve('./selector')
+var parserPath = require.resolve('./parser')
+
+var defaultLang = {
+  template: 'html',
+  style: 'css',
+  script: 'js'
+}
+
+var defaultLoaders = {
+  html: 'vue-html',
+  css: 'style!css',
+  js: 'babel?optional[]=runtime&loose=all&nonStandard=false'
+}
+
+var rewriters = {
+  template: require.resolve('./template-rewriter'),
+  style: require.resolve('./style-rewriter')
+}
+
+module.exports = function (content) {
+  var self = this
+  this.cacheable()
+  var cb = this.async()
+  var output = ''
+  var options = this.options.vue || {}
+  var vueUrl = loaderUtils.getRemainingRequest(this)
+
+  // check if there are custom loaders specified with
+  // vueLoader.withLoaders(), otherwise use defaults
+  var loaders = assign({}, defaultLoaders, options.loaders)
+
+  function getRequire (type, part, index, scoped) {
+    return 'require(' +
+      getRequireString(type, part, index, scoped) +
+    ')\n'
+  }
+
+  function getRequireString (type, part, index, scoped) {
+    return loaderUtils.stringifyRequest(self,
+      // disable system loaders (except post loaders)
+      '-!' +
+      // get loader string for pre-processors
+      getLoaderString(type, part, scoped) +
+      // select the corresponding part from the vue file
+      getSelectorString(type, index || 0) +
+      // the url to the actual vuefile
+      vueUrl
+    )
+  }
+
+  function getRequireForImport (impt) {
+    return 'require(' +
+      loaderUtils.stringifyRequest(self,
+        '-!' +
+        getLoaderString('style', impt, impt.scoped) +
+        impt.src
+      ) +
+    ')\n'
+  }
+
+  function getLoaderString (type, part, scoped) {
+    var lang = part.lang || defaultLang[type]
+    var loader = loaders[lang]
+    var rewriter = getRewriter(type, scoped)
+    var cssRE = /\b(css!?)\b/
+    var htmlRE = /\b((vue-)?html!?)\b/
+    if (loader !== undefined) {
+      // inject rewriter before css/html loader for
+      // extractTextPlugin use cases
+      if (cssRE.test(loader)) {
+        loader = loader.replace(cssRE, function (m, $1) {
+          return ensureBang($1) + rewriter
+        })
+      } else if (htmlRE.test(loader)) {
+        loader = loader.replace(htmlRE, function (m, $1) {
+          return ensureBang($1) + rewriter
+        })
+      } else {
+        loader = ensureBang(loader) + rewriter
+      }
+      return ensureBang(loader)
+    } else {
+      // unknown lang, assume a loader for it is used
+      switch (type) {
+      case 'template':
+        return 'vue-html!' + rewriter + 'template-html?raw&engine=' + lang + '!'
+      case 'style':
+        return 'style!css!' + rewriter + lang + '!'
+      case 'script':
+        return lang + '!'
+      }
+    }
+  }
+
+  function getRewriter (type, scoped) {
+    switch (type) {
+    case 'template':
+      return scoped ? (rewriters.template + '!') : ''
+    case 'style':
+      return rewriters.style + (scoped ? '?scoped=true!' : '!')
+    default:
+      return ''
+    }
+  }
+
+  function getSelectorString (type, index) {
+    return selectorPath +
+      '?type=' + type +
+      '&index=' + index + '!'
+  }
+
+  function ensureBang (loader) {
+    if (loader.charAt(loader.length - 1) !== '!') {
+      return loader + '!'
+    } else {
+      return loader
+    }
+  }
+
+  var url = '!!' + parserPath + '!' + vueUrl
+  this.loadModule(url, function (err, source) {
+    if (err) return cb(err)
+
+    // up to this part, what we have done is basically executing
+    // parser.js on the raw vue file and get the parsing result
+    // which is an object that contains info about the vue file.
+    var parts = self.exec(source, url)
+    var hasLocalStyles = false
+
+    // add requires for src imports
+    parts.styleImports.forEach(function (impt) {
+      if (impt.scoped) hasLocalStyles = true
+      output += getRequireForImport(impt)
+    })
+
+    // add requires for styles
+    parts.style.forEach(function (style, i) {
+      if (style.scoped) hasLocalStyles = true
+      output += getRequire('style', style, i, style.scoped)
+    })
+
+    // add require for script
+    if (parts.script.length) {
+      output += 'module.exports = ' +
+        getRequire('script', parts.script[0], 0)
+    }
+
+    // add require for template
+    if (parts.template.length) {
+      output += ';(typeof module.exports === "function" ' +
+        '? module.exports.options ' +
+        ': module.exports).template = ' +
+        getRequire('template', parts.template[0], 0, hasLocalStyles)
+    }
+
+    // hot reload
+    if (
+      process.env.NODE_ENV !== 'production' &&
+      (parts.script.length || parts.template.length)
+    ) {
+      var scriptString = parts.script.length ? getRequireString('script', parts.script[0], 0) : ''
+      var templateString = parts.template.length ? getRequireString('template', parts.template[0], 0, hasLocalStyles) : ''
+      var accepted = []
+      if (scriptString) {
+        accepted.push(scriptString.slice(1, -1))
+      }
+      if (templateString) {
+        accepted.push(templateString.slice(1, -1))
+      }
+      output +=
+        'if (module.hot) {\n' +
+          '(function () {\n' +
+            // shim the component directive so that it
+            // registers the instances
+            'var hotAPI = require("vue-hot-reload-api")\n' +
+            'hotAPI.install(require("vue"))\n' +
+            'if (!hotAPI.compatible) return\n' +
+            'var id = ' + (scriptString || templateString) + '\n' +
+            // create the record
+            'hotAPI.createRecord(id, module.exports)\n' +
+            'module.hot.accept(' + JSON.stringify(accepted) + ', function () {\n' +
+              'var newOptions = ' + (scriptString ? 'require(' + scriptString + ')\n' : 'null\n') +
+              'var newTemplate = ' + (templateString ? 'require(' + templateString + ')\n' : 'null\n') +
+              'hotAPI.update(id, newOptions, newTemplate)\n' +
+            '})\n' +
+          '})()\n' +
+        '}'
+    }
+
+    // done
+    cb(null, output)
+  })
+}
+
+module.exports.withLoaders = function () {
+  throw new Error(
+    'vue.withLoaders has been deprecated in vue-loader 6.0. ' +
+    'Add a "vue" section to the webpack config instead.'
+  )
+}
