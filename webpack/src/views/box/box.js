@@ -6,7 +6,8 @@ export default {
   template: html,
   data () {
     return {
-      text: '我是box组件的页面'
+      text: '我是box组件的页面',
+      a: ''
     };
   },
   mounted () {
