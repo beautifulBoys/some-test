@@ -2,5 +2,6 @@
 .index {
   color: red;
   font-size: 50px;
-  background: yellow;
+  background: yellow url(../../images/a.png);
+  display: flex;
 }

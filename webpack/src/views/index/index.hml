@@ -1,1 +1,1 @@
-<div class="index">{{text}}</div>
+<div class="index" :class="{'list': hello}">{{text}}</div>
