@@ -1,5 +1,6 @@
 <div>
   <div class="index">{{text}}</div>
+  {{text}}
 </div>
 
 <style>
