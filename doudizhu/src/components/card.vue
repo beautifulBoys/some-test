@@ -1,20 +1,7 @@
 <template>
-  <div class="card-box">
-    <div class="card">
-      <div class="div fleft">
-        <div v-if="item.type === 'k'"><!--大小王-->
-          <div class="text joker" :class="{a: item.text === 'b'}" v-for="item1 in joker">{{item1}}</div>
-        </div>
-        <div v-if="item.type !== 'k'"><!--四色牌-->
-          <div class="text" :class="item.type">{{item.text}}</div>
-          <img src="../images/card_icon_a.png" class="img" v-if="item.type === 'a'"/>
-          <img src="../images/card_icon_b.png" class="img" v-if="item.type === 'b'"/>
-          <img src="../images/card_icon_c.png" class="img" v-if="item.type === 'c'"/>
-          <img src="../images/card_icon_d.png" class="img" v-if="item.type === 'd'"/>
-        </div>
-      </div>
-
-      <div class="div fright">
+  <div class="card-box" :class="{small: type === 'small'}">
+    <div class="card" :class="{bg: !show}">
+      <div class="div" v-for="item2 in card" :class="item2" v-show="show">
         <div v-if="item.type === 'k'"><!--大小王-->
           <div class="text joker" :class="{a: item.text === 'b'}" v-for="item1 in joker">{{item1}}</div>
         </div>
@@ -38,10 +25,11 @@
   方块： d
 */
   export default {
-    props: ['item'],
+    props: ['item', 'show', 'type'],
     data () {
       return {
-        joker: ['J', 'O', 'K', 'E', 'R']
+        joker: ['J', 'O', 'K', 'E', 'R'],
+        card: ['fleft', 'fright']
       };
     }
   };
@@ -57,12 +45,16 @@
     .card {
       width: 80px;
       height: 100%;
-      border: 1px solid #aaa;
+      border: 1px solid #999;
       border-radius: 5px;
       background: #fff;
       text-align: left;
       padding: 5px 0;
       box-sizing: border-box;
+      &.bg {
+        background: url(../images/card_bg.png) no-repeat;
+        background-size: 70px;
+      }
       .div {
         width: 30px;
         height: 100%;
@@ -100,6 +92,15 @@
             color: #ff0303;
           }
         }
+      }
+    }
+    &.small {
+      width: 18px;
+      height: 30px;
+      transform: scale(0.6);
+      .card {
+        width: 70px;
+        height: 100px;
       }
     }
   }

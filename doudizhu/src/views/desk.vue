@@ -2,15 +2,21 @@
   <div class="desk">
     <div class="top-box">
       <div class="first">
-        <button @click="sortEvent()">排 序</button>
+        <template v-for="item in second">
+          <li-card :item="item" :show="false" type="small"></li-card>
+        </template>
+        <div style="width: 30px"></div>
       </div>
       <div class="second">
-
+        <template v-for="item in first">
+          <li-card :item="item" :show="false" type="small"></li-card>
+        </template>
+        <div style="width: 30px"></div>
       </div>
     </div>
     <div class="mine">
       <template v-for="item in list">
-        <li-card :item="item"></li-card>
+        <li-card :item="item" :show="true"></li-card>
       </template>
       <div style="width: 50px"></div>
     </div>
@@ -29,7 +35,9 @@
     },
     computed: {
       ...mapState({
-        list: state => state.card.list
+        list: state => state.card.list,
+        first: state => state.card.first,
+        second: state => state.card.second
       }),
       ...mapGetters([]),
       ...mapMutations([])
@@ -49,25 +57,26 @@
   .desk {
     width: 100%;
     height: 100%;
-    background: #eee;
+    background: #eee url(../images/desk_bg.jpg) no-repeat;
     .top-box {
       display: flex;
       height: 60%;
       .first {
         flex: 1;
         height: 100%;
-        background: blue;
+        padding: 20px 80px 20px 20px;
+        box-sizing: border-box;
       }
       .second {
         flex: 1;
         height: 100%;
-        background: green;
+        padding: 20px 55px 20px 80px;
+        box-sizing: border-box;
       }
     }
     .mine {
       width: 100%;
       height: 40%;
-      background: red;
       display: flex;
       justify-content: center;
       align-items: center;
