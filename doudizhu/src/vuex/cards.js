@@ -1,20 +1,23 @@
-import create from '../lib/create';
+import {create, deal} from '../lib/create';
 import sort from '../lib/sort';
 export default {
   state: {
-    list: [],
+    mine: [],
     first: [],
-    second: []
+    second: [],
+    third: []
   },
   mutations: {
     create (state) {
       var arr = create();
-      state.list = arr[0];
-      state.first = arr[1];
-      state.second = arr[2];
+      deal(state.mine, arr[0]);
+      deal(state.first, arr[1]);
+      deal(state.second, arr[2]);
+      state.third = arr[3];
     },
     sort (state) {
-      state.list = sort(state.list);
+      state.mine = sort(state.mine);
+      deal();
     }
   }
 };

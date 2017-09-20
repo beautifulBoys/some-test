@@ -1,6 +1,6 @@
 <template>
-  <div class="card-box" :class="{small: type === 'small'}">
-    <div class="card" :class="{bg: !show}">
+  <div class="card-box" :class="{small: type === 'small', checked: item.checked}">
+    <div class="card" :class="{bg: !show, act: item.sq === 0}" @click="checkEvent()">
       <div class="div" v-for="item2 in card" :class="item2" v-show="show">
         <div v-if="item.type === 'k'"><!--大小王-->
           <div class="text joker" :class="{a: item.text === 'b'}" v-for="item1 in joker">{{item1}}</div>
@@ -29,8 +29,14 @@
     data () {
       return {
         joker: ['J', 'O', 'K', 'E', 'R'],
-        card: ['fleft', 'fright']
+        card: ['fleft', 'fright'],
+        checked: false
       };
+    },
+    methods: {
+      checkEvent () {
+        if (this.item.sq === 0) this.item.checked = !this.item.checked;
+      }
     }
   };
 </script>
@@ -38,10 +44,13 @@
 <style lang="less" scoped>
   .card-box {
     width: 30px;
-    height: 120px;
+    height: 110px;
     display: inline-block;
     text-align: center;
     z-index: 100;
+    &.checked {
+      margin-top: -20px;
+    }
     .card {
       width: 80px;
       height: 100%;
@@ -51,6 +60,11 @@
       text-align: left;
       padding: 5px 0;
       box-sizing: border-box;
+      &.act {
+        &:active {
+          background: #ddd;
+        }
+      }
       &.bg {
         background: url(../images/card_bg.png) no-repeat;
         background-size: 70px;
@@ -68,11 +82,13 @@
           transform: rotate(180deg);
         }
         .img {
-          width: 18px;
+          width: 15px;
         }
         .text {
           width: 100%;
-          height: 20px;
+          height: 25px;
+          font-size: 25px;
+          font-family: Arial;
           &.joker {
             font-size: 16px;
             line-height: 16px;
@@ -100,7 +116,7 @@
       transform: scale(0.6);
       .card {
         width: 70px;
-        height: 100px;
+        height: 90px;
       }
     }
   }

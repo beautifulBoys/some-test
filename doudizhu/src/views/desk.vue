@@ -1,49 +1,31 @@
 <template>
   <div class="desk">
     <div class="top-box">
-      <div class="first">
-        <template v-for="item in second">
-          <li-card :item="item" :show="false" type="small"></li-card>
-        </template>
-        <div style="width: 30px"></div>
-      </div>
-      <div class="second">
-        <template v-for="item in first">
-          <li-card :item="item" :show="false" type="small"></li-card>
-        </template>
-        <div style="width: 30px"></div>
-      </div>
+      <desk-first></desk-first>
+      <desk-second></desk-second>
     </div>
-    <div class="mine">
-      <template v-for="item in list">
-        <li-card :item="item" :show="true"></li-card>
-      </template>
-      <div style="width: 50px"></div>
-    </div>
+    <desk-mine></desk-mine>
+    <desk-bottom></desk-bottom>
   </div>
 </template>
 
 <script>
-  import Card from '../components/card.vue';
-  import { mapState, mapGetters, mapMutations } from 'vuex';
+  import firstCode from '../components/desk/first.vue';
+  import secondCode from '../components/desk/second.vue';
+  import mineCode from '../components/desk/mine.vue';
+  import bottomCode from '../components/desk/bottom.vue';
   export default {
     components: {
-      'li-card': Card
+      'desk-first': firstCode,
+      'desk-second': secondCode,
+      'desk-mine': mineCode,
+      'desk-bottom': bottomCode
     },
     data () {
       return {};
     },
-    computed: {
-      ...mapState({
-        list: state => state.card.list,
-        first: state => state.card.first,
-        second: state => state.card.second
-      }),
-      ...mapGetters([]),
-      ...mapMutations([])
-    },
     mounted () {
-      console.log(this.list);
+      console.log(this.mine);
       this.$store.commit('create');
     },
     methods: {
@@ -57,29 +39,11 @@
   .desk {
     width: 100%;
     height: 100%;
-    background: #eee url(../images/desk_bg.jpg) no-repeat;
+    background: #eee url(../images/desk_bg.jpg) no-repeat center center;
+    background-size: 113%;
     .top-box {
       display: flex;
-      height: 60%;
-      .first {
-        flex: 1;
-        height: 100%;
-        padding: 20px 80px 20px 20px;
-        box-sizing: border-box;
-      }
-      .second {
-        flex: 1;
-        height: 100%;
-        padding: 20px 55px 20px 80px;
-        box-sizing: border-box;
-      }
-    }
-    .mine {
-      width: 100%;
-      height: 40%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      height: 55%;
     }
   }
 </style>
