@@ -18,12 +18,15 @@ function create () {
   return newArr;
 }
 
-function deal (arr, list) {
+function deal (arr, list, callback) {
   var i = 0;
   var j = list.length;
   var timer = setInterval(() => {
     arr.push(list[i]);
-    if (++i === j) clearInterval(timer);
+    if (++i === j) {
+      if (callback) callback();
+      clearInterval(timer);
+    }
   }, 150);
 }
 

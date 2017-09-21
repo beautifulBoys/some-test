@@ -1,6 +1,6 @@
 <template>
-  <div class="card-box" :class="{small: type === 'small', checked: item.checked}">
-    <div class="card" :class="{bg: !show, act: item.sq === 0}" @click="checkEvent()">
+  <div class="card-box" :class="{small: type === 'small', checked: item.checked && canActive}">
+    <div class="card" :class="{bg: !show, act: canActive}" @click="checkEvent()">
       <div class="div" v-for="item2 in card" :class="item2" v-show="show">
         <div v-if="item.type === 'k'"><!--大小王-->
           <div class="text joker" :class="{a: item.text === 'b'}" v-for="item1 in joker">{{item1}}</div>
@@ -25,7 +25,7 @@
   方块： d
 */
   export default {
-    props: ['item', 'show', 'type'],
+    props: ['item', 'show', 'type', 'canActive'],
     data () {
       return {
         joker: ['J', 'O', 'K', 'E', 'R'],
@@ -35,7 +35,9 @@
     },
     methods: {
       checkEvent () {
-        if (this.item.sq === 0) this.item.checked = !this.item.checked;
+        if (this.canActive) {
+          this.item.checked = !this.item.checked;
+        }
       }
     }
   };
@@ -43,7 +45,7 @@
 
 <style lang="less" scoped>
   .card-box {
-    width: 30px;
+    width: 28px;
     height: 110px;
     display: inline-block;
     text-align: center;
@@ -70,7 +72,7 @@
         background-size: 70px;
       }
       .div {
-        width: 30px;
+        width: 28px;
         height: 100%;
         text-align: center;
         font-size: 20px;

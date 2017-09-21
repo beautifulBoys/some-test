@@ -72,6 +72,9 @@
             line-height: 25px;
             text-align: center;
             box-shadow: 2px 2px 5px rgba(49, 37, 28, 0.5);
+            &:active {
+              transform: scale(0.9);
+            }
           }
         }
       }
@@ -128,6 +131,9 @@
       line-height: 28px;
       text-align: center;
       box-shadow: 2px 2px 5px rgba(49, 37, 28, 0.5);
+      &:active {
+        transform: scale(0.9);
+      }
     }
   }
 </style>
