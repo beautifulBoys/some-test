@@ -20,7 +20,7 @@
 <style lang="less"scoped>
   .bottom {
     width: 100%;
-    height: 10%;
+    height: 40px;
     background: rgba(255, 255, 255, 0.3);
     box-shadow: 0 5px 5px rgba(0, 0, 0, 0.3);
     padding: 4px 15px;
@@ -61,6 +61,7 @@
           justify-content: center;
           align-items: center;
           margin-right: -3px;
+          margin-top: -1px;
           color: #fff;
           font-weight: 800;
           .box {
@@ -128,7 +129,7 @@
       float: right;
       color: #fff;
       font-weight: 800;
-      line-height: 28px;
+      line-height: 32px;
       text-align: center;
       box-shadow: 2px 2px 5px rgba(49, 37, 28, 0.5);
       &:active {

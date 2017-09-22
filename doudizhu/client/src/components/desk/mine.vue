@@ -24,11 +24,15 @@
           <div class="control-text">不出</div>
         </div>
         <div class="play-control" v-show="controlShow">
-          <div class="control-box-btn">
+          <div class="control-box-btn" v-show="start">
             <div class="btn" @click="playEvent()">出牌</div>
             <div class="btn" @click="tipEvent()">提示</div>
             <div class="btn"@click="noPlayEvent()">不出</div>
             <li-clock style="margin-top:15px;" :second="countDown" v-model="clockStatus"></li-clock>
+          </div>
+          <div class="control-box-btn" v-show="!start">
+            <div class="btn width" @click="startEvent(5)">明牌开始<span class="span"> X5</span></div>
+            <div class="btn width blue" @click="startEvent(1)">开始游戏</div>
           </div>
         </div>
       </div>
@@ -39,7 +43,6 @@
   import { mapState, mapGetters, mapMutations } from 'vuex';
   import Clock from './clock.vue';
   import Card from '../card.vue';
-  import io from 'socket.io';
   export default {
     components: {
       'li-card': Card,
@@ -57,12 +60,16 @@
     },
     computed: {
       ...mapState({
-        card: state => state.card.mine.card,
-        active: state => state.card.mine.active
+        card: state => state.desk.mine.card,
+        active: state => state.desk.mine.active,
+        start: state => state.desk.start
       }),
       ...mapGetters([])
     },
     methods: {
+      startEvent (num) {
+        this.$store.dispatch('start');
+      },
       playEvent () {
         this.cardShow = true;
         this.$store.commit('play');
@@ -83,7 +90,7 @@
 <style lang="less" scoped>
   .mine {
     width: 100%;
-    height: 35%;
+    height: 40%;
     display: flex;
     position: relative;
     .left {
@@ -164,6 +171,15 @@
               text-shadow: 0 0 2px rgba(0,0,0,0.5);
               box-shadow: 3px 3px 5px rgba(0,0,0,0.3);
               margin: 20px 20px 0 0;
+              &.width {
+                width: 140px;
+                &.blue {
+                  background: linear-gradient(180deg, #09d1eb, #09a3e9, #0175c2, #005da3);
+                }
+                .span {
+                  font-size: 16px;
+                }
+              }
               &:active {
                 transform: scale(0.9);
               }

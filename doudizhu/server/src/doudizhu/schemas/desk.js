@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
-var BulletSchemas = new mongoose.Schema({
-    currentTime: Object,
+var deskSchemas = new mongoose.Schema({
+    createTime: new Date(),
     sendTime: Object,
     content: String,
     userId: Number,
@@ -10,4 +10,4 @@ var BulletSchemas = new mongoose.Schema({
     versionKey: false
 });
 
-module.exports = mongoose.model('bullet', BulletSchemas);
+module.exports = mongoose.model('bullet', deskSchemas);

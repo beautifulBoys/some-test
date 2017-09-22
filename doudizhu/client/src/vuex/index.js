@@ -1,11 +1,11 @@
 import Vuex from 'vuex';
 import Vue from 'vue';
-import card from './cards';
+import desk from './desk';
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   modules: {
-    card
+    desk
   }
 });

@@ -1,15 +1,22 @@
 <template>
   <div class="desk">
-    <div class="top-box">
-      <desk-first></desk-first>
-      <desk-second></desk-second>
+    <div class="body">
+      <div class="top-box">
+        <div class="top" v-show="start">
+          <desk-first></desk-first>
+          <desk-second></desk-second>
+        </div>
+      </div>
+      <desk-mine></desk-mine>
     </div>
-    <desk-mine></desk-mine>
-    <desk-bottom></desk-bottom>
+    <div class="bottom-box">
+      <desk-bottom></desk-bottom>
+    </div>
   </div>
 </template>
 
 <script>
+  import { mapState, mapGetters, mapMutations } from 'vuex';
   import firstCode from '../components/desk/first.vue';
   import secondCode from '../components/desk/second.vue';
   import mineCode from '../components/desk/mine.vue';
@@ -25,9 +32,16 @@
     data () {
       return {};
     },
+    computed: {
+      ...mapState({
+        start: state => state.desk.start
+      }),
+      ...mapGetters([]),
+      ...mapMutations([])
+    },
     mounted () {
-      console.log(this.mine);
-      this.$store.commit('create');
+      console.log(io);
+      // this.$store.commit('create');
     },
     methods: {
       sortEvent () {
@@ -42,9 +56,18 @@
     height: 100%;
     background: #eee url(../images/desk_bg.jpg) no-repeat center center;
     background-size: 113%;
-    .top-box {
-      display: flex;
-      height: 55%;
+    display: flex;
+    flex-flow: column;
+    .body {
+      flex: 1;
+      .top-box {
+        display: flex;
+        height: 60%;
+      }
     }
+    .bottom-box {
+      height: 40px;
+    }
+
   }
 </style>

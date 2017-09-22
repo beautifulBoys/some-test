@@ -46,7 +46,7 @@
     },
     computed: {
       ...mapState({
-        active: state => state.card.second.active
+        active: state => state.desk.second.active
       }),
       ...mapGetters([]),
       ...mapMutations([])

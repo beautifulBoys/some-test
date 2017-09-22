@@ -1,21 +1,29 @@
 import {create, deal} from '../lib/create';
 import sort from '../lib/sort';
+
+import io from 'socket.io-client';
+
 export default {
   state: {
+    deskServer: null,
+    start: false,
     mine: {
       id: 0,
+      times: 15, // 倍数
       card: [],
       active: [],
       deathList: []
     },
     first: {
       id: 1,
+      times: 15,
       card: [],
       active: [],
       deathList: []
     },
     second: {
       id: 2,
+      times: 15,
       card: [],
       active: [],
       deathList: []
@@ -56,6 +64,16 @@ export default {
       state.mine.card = mineNew;
       state.mine.active = playCards.reverse();
       state.mine.deathList.push(state.mine.active);
+    },
+    updateTimes (state, id, n) {},
+    saveHttpServer (state, server) {
+      state.deskServer = server;
+    }
+  },
+  actions: {
+    start ({ commit }) {
+      let httpServer = io.connect('http://10.209.96.67:3002');
+      commit('saveHttpServer', httpServer);
     }
   }
 };
