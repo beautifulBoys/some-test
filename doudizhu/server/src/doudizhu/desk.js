@@ -20,7 +20,6 @@ function sock() {
                 me.emit('loginSuccess', docs);
                 console.log('有人联入');
             });
-
 */
         });
 
