@@ -14,6 +14,7 @@
   import secondCode from '../components/desk/second.vue';
   import mineCode from '../components/desk/mine.vue';
   import bottomCode from '../components/desk/bottom.vue';
+  import io from '../lib/socket.io.js';
   export default {
     components: {
       'desk-first': firstCode,
