@@ -22,7 +22,7 @@
     <div class="right">
       <img src="../../images/nongmin2.png"/>
       <div class="user">
-        <div class="name">深藏blue</div>
+        <div class="name">{{info.second.user.name}}</div>
         <div class="text">1.93万</div>
       </div>
     </div>
@@ -46,7 +46,8 @@
     },
     computed: {
       ...mapState({
-        active: state => state.desk.second.active
+        active: state => state.desk.info.second.desk.active,
+        info: state => state.desk.info
       }),
       ...mapGetters([]),
       ...mapMutations([])

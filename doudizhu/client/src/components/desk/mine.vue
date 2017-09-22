@@ -2,7 +2,7 @@
   <div class="mine">
     <div class="left">
       <img src="../../images/dizhu.png"/>
-      <div class="user"><span>深藏blue</span></div>
+      <div class="user"><span>{{info.mine.user.name}}</span></div>
     </div>
 
     <div class="right">
@@ -60,9 +60,10 @@
     },
     computed: {
       ...mapState({
-        card: state => state.desk.mine.card,
-        active: state => state.desk.mine.active,
-        start: state => state.desk.start
+        card: state => state.desk.info.mine.desk.cards,
+        active: state => state.desk.info.mine.desk.active,
+        start: state => state.desk.start,
+        info: state => state.desk.info
       }),
       ...mapGetters([])
     },

@@ -60,9 +60,16 @@
     flex-flow: column;
     .body {
       flex: 1;
+      display: flex;
+      flex-flow: column;
       .top-box {
+        flex: 1;
         display: flex;
-        height: 60%;
+        .top {
+          width: 100%;
+          height: 100%;
+          display: flex;
+        }
       }
     }
     .bottom-box {

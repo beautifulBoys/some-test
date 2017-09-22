@@ -7,26 +7,59 @@ export default {
   state: {
     deskServer: null,
     start: false,
-    mine: {
-      id: 0,
-      times: 15, // 倍数
-      card: [],
-      active: [],
-      deathList: []
-    },
-    first: {
-      id: 1,
-      times: 15,
-      card: [],
-      active: [],
-      deathList: []
-    },
-    second: {
-      id: 2,
-      times: 15,
-      card: [],
-      active: [],
-      deathList: []
+    info: { // 整体传输info对象
+      mine: {
+        user: {
+          id: 21,
+          name: '深藏blue'
+        },
+        desk: {
+          times: 15,
+          active: [],
+          cards: [],
+          cards_fu: [],
+          deathList: [],
+          deskId: null,
+          role: {
+            index: null, // 叫地主顺序
+            type: null, // 角色类型
+            text: '' // 角色类型解释说明
+          }
+        }
+      },
+      first: {
+        user: {},
+        desk: {
+          times: 15,
+          active: [],
+          cards: [],
+          deathList: [],
+          deskId: null,
+          role: {
+            index: null, // 叫地主顺序
+            type: null, // 角色类型
+            text: '' // 角色类型解释说明
+          }
+        }
+      },
+      second: {
+        user: {},
+        desk: {
+          times: 15,
+          active: [],
+          cards: [],
+          deathList: [],
+          deskId: null,
+          role: {
+            index: null, // 叫地主顺序
+            type: null, // 角色类型
+            text: '' // 角色类型解释说明
+          }
+        }
+      },
+      other: {
+        dipai: []
+      }
     },
     third: [],
     ready: false
@@ -66,8 +99,9 @@ export default {
       state.mine.deathList.push(state.mine.active);
     },
     updateTimes (state, id, n) {},
-    saveHttpServer (state, server) {
-      state.deskServer = server;
+    saveHttpServer (state, httpServer) {
+      state.deskServer = httpServer;
+      client(state, httpServer);
     }
   },
   actions: {
@@ -77,3 +111,23 @@ export default {
     }
   }
 };
+
+function client (state, httpServer) {
+  httpServer.on('connectSuccess', () => {
+    console.log('连接成功');
+    httpServer.emit('user', state.info);
+  });
+  httpServer.on('desk-and-cards', (info) => { // 分桌并发牌
+    state.start = true;
+    state.info = info;
+    deal(state.info.mine.desk.cards, info.mine.desk.cards_fu, () => {
+      setTimeout(() => {
+        state.info.mine.desk.cards = sort(state.info.mine.desk.cards);
+        if (!state.info.mine.desk.role.index) httpServer.emit('jiao-di-zhu', state.info);
+      }, 500);
+    });
+  });
+  httpServer.on('desk-and-cards', (info) => { // 分桌并发牌
+
+  });
+}
