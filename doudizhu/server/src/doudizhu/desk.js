@@ -40,8 +40,7 @@ function sock() {
                 if (err) console.log(err);
                 console.log(bull);
             });
-
-	*/
+  	*/
             socket.emit('messageSuccess', obj);   // 向自己推送
             me.broadcast.emit('message', obj); // 广播给自己以外的所有用户
             console.log('有人发送弹幕了:' + obj.content);

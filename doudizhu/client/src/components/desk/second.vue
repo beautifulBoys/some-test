@@ -57,7 +57,6 @@
   .second {
     flex: 1;
     height: 100%;
-    background: green;
     background-size: 100px;
     box-sizing: border-box;
     position: relative;

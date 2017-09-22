@@ -57,8 +57,6 @@
   .first {
     flex: 1;
     height: 100%;
-    background: blue url(../../images/nongmin1.png) no-repeat left 20%;
-    background-size: 100px;
     box-sizing: border-box;
     position: relative;
     display: flex;

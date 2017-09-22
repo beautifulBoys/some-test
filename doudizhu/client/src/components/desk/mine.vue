@@ -39,6 +39,7 @@
   import { mapState, mapGetters, mapMutations } from 'vuex';
   import Clock from './clock.vue';
   import Card from '../card.vue';
+  import io from 'socket.io';
   export default {
     components: {
       'li-card': Card,
