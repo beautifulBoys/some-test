@@ -2,20 +2,30 @@
   <div class="bottom">
     <div class="left">
       <div class="bea"></div>
-      <div class="text">2086</div>
+      <div class="text">{{info.mine.user.money}}</div>
       <div class="add">
         <div class="box">+</div>
       </div>
     </div>
     <div class="right">聊天</div>
     <div class="center">
-      <div class="icon"><div class="box">倍</div></div>
-      <div class="text">20</div>
+      <div class="icon">
+        <div class="box">倍</div>
+      </div>
+      <div class="text">{{info.mine.desk.times}}</div>
     </div>
   </div>
 </template>
 <script>
-  export default {};
+  import { mapState, mapGetters } from 'vuex';
+  export default {
+    computed: {
+      ...mapState({
+        info: state => state.desk.info
+      }),
+      ...mapGetters([])
+    }
+  };
 </script>
 <style lang="less"scoped>
   .bottom {

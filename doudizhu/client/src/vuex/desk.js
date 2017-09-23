@@ -2,16 +2,24 @@ import {create, deal} from '../lib/create';
 import sort from '../lib/sort';
 
 import io from 'socket.io-client';
+// import jiaodizhufunc from './desk_func/jiaodizhu.js';
 
 export default {
   state: {
-    deskServer: null,
-    start: false,
+    httpServer: null,
+    deskStatus: ['start', 'jiaodizhu', 'chupai', 'jieshu'],
+    timeObj: {
+      chupai: 20,
+      yaobuqi: 3
+    },
     info: { // 整体传输info对象
+      jiaodizhuIndex: 0,
+      jiaodizhuCurrentTimes: 0,
       mine: {
         user: {
           id: 21,
-          name: '深藏blue'
+          name: '深藏blue',
+          money: 20580
         },
         desk: {
           times: 15,
@@ -20,6 +28,12 @@ export default {
           cards_fu: [],
           deathList: [],
           deskId: null,
+          isMingPai: false,
+          chupaiObj: {
+            status: true,
+            textShow: false,
+            cardShow: false
+          },
           role: {
             index: null, // 叫地主顺序
             type: null, // 角色类型
@@ -35,6 +49,7 @@ export default {
           cards: [],
           deathList: [],
           deskId: null,
+          isMingPai: false,
           role: {
             index: null, // 叫地主顺序
             type: null, // 角色类型
@@ -50,6 +65,7 @@ export default {
           cards: [],
           deathList: [],
           deskId: null,
+          isMingPai: false,
           role: {
             index: null, // 叫地主顺序
             type: null, // 角色类型
@@ -81,9 +97,29 @@ export default {
       });
       state.third = arr[3];
     },
-    play (state) {
-      state.mine.active = [];
-      var mine = state.mine.card;
+    updateTimes (state, id, n) {},
+    saveHttpServer (state, httpServer) {
+      state.httpServer = httpServer;
+      state.deskStatus.shift();
+      client(state, httpServer);
+    },
+    bujiaoEvent (state) {
+      state.info.jiaodizhuIndex++;
+      state.httpServer.emit('jiao-di-zhu', state.info);
+    },
+    jiaodizhuEvent (state) {
+      state.info.jiaodizhuIndex++;
+      state.info.jiaodizhuCurrentTimes++;
+      state.httpServer.emit('jiao-di-zhu', state.info);
+    },
+    buchuEvent (state) {
+      state.info.mine.chupaiObj.textShow = true;
+      state.httpServer.emit('chu-pai', state.info);
+    },
+    chupaiEvent (state) {
+      state.info.mine.chupaiObj.cardShow = true;
+      state.info.mine.active = [];
+      var mine = state.info.mine.cards;
       var mineNew = [];
       var playCards = [];
       for (let i = 0; i < mine.length; i++) {
@@ -94,18 +130,14 @@ export default {
           mineNew.push(mine[i]);
         }
       }
-      state.mine.card = mineNew;
-      state.mine.active = playCards.reverse();
-      state.mine.deathList.push(state.mine.active);
-    },
-    updateTimes (state, id, n) {},
-    saveHttpServer (state, httpServer) {
-      state.deskServer = httpServer;
-      client(state, httpServer);
+      state.info.mine.cards = mineNew;
+      state.info.mine.active = playCards.reverse();
+      state.info.mine.deathList.push(state.info.mine.active);
+      state.httpServer.emit('chu-pai', state.info);
     }
   },
   actions: {
-    start ({ commit }) {
+    startEvent ({ commit }) {
       let httpServer = io.connect('http://10.209.96.67:3002');
       commit('saveHttpServer', httpServer);
     }
@@ -123,11 +155,14 @@ function client (state, httpServer) {
     deal(state.info.mine.desk.cards, info.mine.desk.cards_fu, () => {
       setTimeout(() => {
         state.info.mine.desk.cards = sort(state.info.mine.desk.cards);
-        if (!state.info.mine.desk.role.index) httpServer.emit('jiao-di-zhu', state.info);
-      }, 500);
+      }, 500); // 此处可以写一个排序动画
     });
   });
-  httpServer.on('desk-and-cards', (info) => { // 分桌并发牌
+  httpServer.on('jiao-di-zhu', (info) => { // 叫地主 -- 收到的回复
 
+  });
+  httpServer.on('jiao-di-zhu-success', (info) => { // 叫地主 -- 收到的回复
+    state.info = info;
+    state.deskStatus.shift();
   });
 }

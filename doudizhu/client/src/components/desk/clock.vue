@@ -21,7 +21,10 @@
       this.seconds = this.second + 0;
       this.timer = setInterval(() => {
         if (this.seconds) this.seconds--;
-        else clearInterval(this.timer);
+        else {
+          clearInterval(this.timer);
+          this.$emit('timeOut');
+        }
       }, 1000);
     }
   };

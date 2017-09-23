@@ -8,6 +8,10 @@
         <div style="width: 30px"></div>
       </div>
       <div class="control-box">
+        <div class="size">
+          <img src="../../images/card_bg.png"/>
+          <div class="text">17</div>
+        </div>
         <div>
           <template v-for="item in active">
             <li-card :item="item" :show="true" type="small"></li-card>
@@ -23,7 +27,7 @@
       <img src="../../images/nongmin2.png"/>
       <div class="user">
         <div class="name">{{info.second.user.name}}</div>
-        <div class="text">1.93万</div>
+        <div class="text">{{info.second.user.money}}</div>
       </div>
     </div>
   </div>
@@ -97,6 +101,29 @@
         height: 100px;
         padding-right: 10px;
         box-sizing: border-box;
+        position: relative;
+        .size {
+          width: 25px;
+          height: 30px;
+          background: red;
+          position: absolute;
+          top: 60px;
+          right: -10px;
+          .text {
+            width: 100%;
+            height: 100%;
+            line-height: 30px;
+            text-align: center;
+            font-size: 16px;
+            color: #fff;
+            font-weight: 900;
+            margin-top: -30px;
+          }
+          img {
+            width: 100%;
+            height: 100%;
+          }
+        }
         .control {
           width: 100%;
           height: 50px;

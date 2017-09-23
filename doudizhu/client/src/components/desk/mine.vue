@@ -14,33 +14,40 @@
 
     <div class="control">
       <div class="control-position">
-        <div class="play-card" v-show="cardShow">
+        <div class="play-card" v-show="chupaiObj.cardShow">
           <template v-for="item in active">
             <li-card :item="item" :show="true" type="small"></li-card>
           </template>
           <div style="width: 30px"></div>
         </div>
-        <div class="play-tip" v-show="tipShow">
+        <div class="play-tip" v-show="info.mine.desk.chupaiObj.textShow">
           <div class="control-text">不出</div>
         </div>
-        <div class="play-control" v-show="controlShow">
-          <div class="control-box-btn" v-show="start">
-            <div class="btn" @click="playEvent()">出牌</div>
-            <div class="btn" @click="tipEvent()">提示</div>
-            <div class="btn"@click="noPlayEvent()">不出</div>
-            <li-clock style="margin-top:15px;" :second="countDown" v-model="clockStatus"></li-clock>
-          </div>
-          <div class="control-box-btn" v-show="!start">
+        <div class="play-control" v-show="!info.mine.desk.chupaiObj.textShow">
+          <div class="control-box-btn" v-show="deskStatus[0] === 'start'">
             <div class="btn width" @click="startEvent(5)">明牌开始<span class="span"> X5</span></div>
             <div class="btn width blue" @click="startEvent(1)">开始游戏</div>
           </div>
+          <div class="control-box-btn" v-show="deskStatus[0] === 'jiaodizhu' && (info.jiaodizhuIndex === 0 || info.jiaodizhuIndex === 4)">
+            <div class="btn"@click="bujiaoEvent()">不叫</div>
+            <div class="btn" @click="jiaodizhuEvent()">叫地主</div>
+            <!-- <div class="btn" @click="qiangdizhuEvent()">抢地主</div> -->
+            <li-clock style="margin-top:15px;" :second="timeObj.chupai" v-model="clockStatus" @timeOut="timeOutEvent()"></li-clock>
+          </div>
+          <div class="control-box-btn" v-show="deskStatus[0] === 'chupai' && info.mine.desk.chupaiObj.status">
+            <div class="btn"@click="buchuEvent()">不出</div>
+            <div class="btn" @click="tipEvent()">提示</div>
+            <div class="btn" @click="chupaiEvent()">出牌</div>
+            <li-clock style="margin-top:15px;" :second="timeObj.chupai" v-model="clockStatus" @timeOut="timeOutEvent()"></li-clock>
+          </div>
+
         </div>
       </div>
     </div>
   </div>
 </template>
 <script>
-  import { mapState, mapGetters, mapMutations } from 'vuex';
+  import { mapState, mapGetters, mapMutations, mapActions } from 'vuex';
   import Clock from './clock.vue';
   import Card from '../card.vue';
   export default {
@@ -54,28 +61,23 @@
         clockStatus: false,
         noPlay: false,
         cardShow: false,
-        controlShow: true,
-        tipShow: false
+        controlShow: true
       };
     },
     computed: {
       ...mapState({
         card: state => state.desk.info.mine.desk.cards,
         active: state => state.desk.info.mine.desk.active,
-        start: state => state.desk.start,
-        info: state => state.desk.info
+        deskStatus: state => state.desk.deskStatus,
+        info: state => state.desk.info,
+        timeObj: state => state.desk.timeObj
       }),
       ...mapGetters([])
     },
     methods: {
-      startEvent (num) {
-        this.$store.dispatch('start');
-      },
-      playEvent () {
-        this.cardShow = true;
-        this.$store.commit('play');
-        this.controlShow = false;
-      },
+      ...mapActions({
+        startEvent: 'startEvent'
+      }),
       tipEvent () {
 
       },
@@ -84,7 +86,13 @@
         this.controlShow = false;
         this.tipShow = true;
       },
-      ...mapMutations([])
+      ...mapMutations({
+        bujiaoEvent: 'bujiaoEvent',
+        jiaodizhuEvent: 'jiaodizhuEvent',
+        timeOutEvent: 'buchuEvent',
+        chupaiEvent: 'chupaiEvent',
+        buchuEvent: 'buchuEvent'
+      })
     }
   };
 </script>
@@ -124,7 +132,7 @@
     .control {
       position: absolute;
       left: 0;
-      top: -50%;
+      top: -45%;
       width: 100%;
       height: 40px;
       .control-position {
