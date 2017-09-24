@@ -14,7 +14,7 @@
 
     <div class="control">
       <div class="control-position">
-        <div class="play-card" v-show="chupaiObj.cardShow">
+        <div class="play-card" v-show="info.mine.desk.chupaiObj.cardShow">
           <template v-for="item in active">
             <li-card :item="item" :show="true" type="small"></li-card>
           </template>
@@ -29,16 +29,16 @@
             <div class="btn width blue" @click="startEvent(1)">开始游戏</div>
           </div>
           <div class="control-box-btn" v-show="deskStatus[0] === 'jiaodizhu' && (info.jiaodizhuIndex === 0 || info.jiaodizhuIndex === 4)">
-            <div class="btn"@click="bujiaoEvent()">不叫</div>
+            <div class="btn" @click="bujiaoEvent()">不叫</div>
             <div class="btn" @click="jiaodizhuEvent()">叫地主</div>
             <!-- <div class="btn" @click="qiangdizhuEvent()">抢地主</div> -->
-            <li-clock style="margin-top:15px;" :second="timeObj.chupai" v-model="clockStatus" @timeOut="timeOutEvent()"></li-clock>
+            <!-- <li-clock style="margin-top:15px;" :second="timeObj.chupai" v-model="clockStatus" @timeOut="timeOutEvent()"></li-clock> -->
           </div>
           <div class="control-box-btn" v-show="deskStatus[0] === 'chupai' && info.mine.desk.chupaiObj.status">
             <div class="btn"@click="buchuEvent()">不出</div>
             <div class="btn" @click="tipEvent()">提示</div>
             <div class="btn" @click="chupaiEvent()">出牌</div>
-            <li-clock style="margin-top:15px;" :second="timeObj.chupai" v-model="clockStatus" @timeOut="timeOutEvent()"></li-clock>
+            <!-- <li-clock style="margin-top:15px;" :second="timeObj.chupai" v-model="clockStatus" @timeOut="timeOutEvent()"></li-clock> -->
           </div>
 
         </div>

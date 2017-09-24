@@ -55,7 +55,10 @@ function desk () {
     });
     // 出牌
     socket.on('chu-pai', function (info) {
-      robot(info.first.desk.cards, info.mine.desk.active);
+      var tipArr = robot.robot(info.first.desk.cards, info.mine.desk.active);
+      // console.log('tipArr: ', tipArr);
+      socket.emit('chu-pai', {cards: info.first.desk.cards, arr: tipArr}); // 向自己推送
+      // robot(info.first.desk.cards, info.mine.desk.active);
     });
 
     //监听用户退出

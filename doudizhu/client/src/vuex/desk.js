@@ -3,11 +3,12 @@ import sort from '../lib/sort';
 
 import io from 'socket.io-client';
 // import jiaodizhufunc from './desk_func/jiaodizhu.js';
+// import robot from './desk_func/robot.js';
 
 export default {
   state: {
     httpServer: null,
-    deskStatus: ['start', 'jiaodizhu', 'chupai', 'jieshu'],
+    deskStatus: ['start', false, 'jiaodizhu', 'chupai', 'jieshu'],
     timeObj: {
       chupai: 20,
       yaobuqi: 3
@@ -113,13 +114,13 @@ export default {
       state.httpServer.emit('jiao-di-zhu', state.info);
     },
     buchuEvent (state) {
-      state.info.mine.chupaiObj.textShow = true;
+      state.info.mine.desk.chupaiObj.textShow = true;
       state.httpServer.emit('chu-pai', state.info);
     },
     chupaiEvent (state) {
-      state.info.mine.chupaiObj.cardShow = true;
-      state.info.mine.active = [];
-      var mine = state.info.mine.cards;
+      state.info.mine.desk.chupaiObj.cardShow = true;
+      state.info.mine.desk.active = [];
+      var mine = state.info.mine.desk.cards;
       var mineNew = [];
       var playCards = [];
       for (let i = 0; i < mine.length; i++) {
@@ -130,9 +131,10 @@ export default {
           mineNew.push(mine[i]);
         }
       }
-      state.info.mine.cards = mineNew;
-      state.info.mine.active = playCards.reverse();
-      state.info.mine.deathList.push(state.info.mine.active);
+      state.info.mine.desk.cards = mineNew;
+      state.info.mine.desk.active = playCards.reverse();
+      state.info.mine.desk.deathList.push(state.info.mine.desk.active);
+      // console.log(robot.judgeCardType(state.info.mine.desk.active)); // 测试判断出牌类型
       state.httpServer.emit('chu-pai', state.info);
     }
   },
@@ -155,6 +157,7 @@ function client (state, httpServer) {
     deal(state.info.mine.desk.cards, info.mine.desk.cards_fu, () => {
       setTimeout(() => {
         state.info.mine.desk.cards = sort(state.info.mine.desk.cards);
+        state.deskStatus.shift();
       }, 500); // 此处可以写一个排序动画
     });
   });
@@ -164,5 +167,20 @@ function client (state, httpServer) {
   httpServer.on('jiao-di-zhu-success', (info) => { // 叫地主 -- 收到的回复
     state.info = info;
     state.deskStatus.shift();
+  });
+  httpServer.on('chu-pai', (info) => { // 出牌
+    console.log(info);
+    var a = '';
+    var b = '';
+    for (var i = 0; i < info.cards.length; i++) {
+      a += info.cards[i].text.toString() + ' ';
+    }
+    for (var j = 0; j < info.arr.length; j++) {
+      for (var k = 0; k < info.arr[j].length; k++) {
+        b += info.arr[j][k].text.toString() + ' ';
+      }
+      b += '　 　 ';
+    }
+    console.log(a + '\n' + b);
   });
 }
