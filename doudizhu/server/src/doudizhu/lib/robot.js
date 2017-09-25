@@ -40,13 +40,28 @@ function robot (arr, active) { // 机器人
   } else if (type.type === 2) {
     newArr = separateCard.shunzi(arr, sortMap(arr), active[0].value, active.length); // (arr, obj, firVal, length)
   } else if (type.type === 3) {
-
+    var a = sortMap(active);
+    let val = null;
+    for (let k in a) {
+      if (a[k] === 3) val = k - 0;
+    }
+    newArr = separateCard.sandaiyi(arr, sortMap(arr), val); // (arr, obj, val)
   } else if (type.type === 4) {
-
+    var a = sortMap(active);
+    let val = null;
+    for (let k in a) {
+      if (a[k] === 3) val = k - 0;
+    }
+    newArr = separateCard.sandaiyidui(arr, sortMap(arr), val); // (arr, obj, val)
   } else if (type.type === 5) {
-
+    var a = sortMap(active);
+    let val = null;
+    for (let k in a) {
+      if (a[k] === 4) val = k - 0;
+    }
+    newArr = separateCard.sidaier(arr, sortMap(arr), val); // (arr, obj, val)
   } else if (type.type === 6) {
-
+    newArr = separateCard.sange(arr, sortMap(arr), active[0].value); // (arr, obj, val)
   } else if (type.type === 7) {
 
   } else if (type.type === 8) {
@@ -56,7 +71,12 @@ function robot (arr, active) { // 机器人
   } else if (type.type === 10) {
 
   } else if (type.type === 11) {
-
+    var a = sortMap(active);
+    let val = null;
+    for (let k in a) {
+      if (a[k] === 4) val = k - 0;
+    }
+    newArr = separateCard.sidailiangdui(arr, sortMap(arr), val); // (arr, obj, val)
   } else if (type.type === 12) {
 
   } else {

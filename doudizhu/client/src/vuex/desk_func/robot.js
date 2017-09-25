@@ -61,7 +61,7 @@ function judgeCardType (active) { // 判断出的是什么类型的牌
     if (obj.is_shunzi(active)) type = 2;
     else if (obj.is_feiji(active)) type = 7;
     else if (obj.is_liandui(active)) type = 8;
-    else if (obj.is_sidaier(active)) type = 5;
+    else if (obj.is_sidailiangdui(active)) type = 11;
     else console.log('判断类型出错了', active);
   } else if (length === 9) {
     if (obj.is_shunzi(active)) type = 2;
@@ -148,9 +148,9 @@ var obj = {
     return arr.length === 5 && !this.is_shunzi(arr);
   },
   is_sidaier: function (arr) { // 待优化
-    if (arr.length < 6) return false;
+    if (arr.length !== 6) return false;
     var a = {};
-    for (var i = 0; i < arr.length; i++) { // {5:4, 8:1, 9:1}      {5:4, 8:2, 9:2}
+    for (var i = 0; i < arr.length; i++) { // {5:4, 8:1, 9:1}
       if (a[arr[i].value]) a[arr[i].value]++;
       else {
         a[arr[i].value] = 1;
@@ -158,14 +158,33 @@ var obj = {
     }
     var count = 0; // 必须只有三种数字
     var is4 = false; // 有一种必须为4张
-    var isduiordan = 0;
-    var daier = false;
+    var daier = true; // 带的两个都为单牌
     for (var j in a) {
       count++;
       if (a[j] === 4) is4 = true;
       else {
-        if (!isduiordan) isduiordan = a[j];
-        else daier = (a[j] === isduiordan);
+        if (a[j] !== 1) daier = false;
+      }
+    }
+    return is4 && daier && count === 3;
+  },
+  is_sidailiangdui: function (arr) {
+    if (arr.length !== 8) return false;
+    var a = {};
+    for (var i = 0; i < arr.length; i++) { // {5:4, 8:2, 9:2}
+      if (a[arr[i].value]) a[arr[i].value]++;
+      else {
+        a[arr[i].value] = 1;
+      }
+    }
+    var count = 0; // 必须只有三种数字
+    var is4 = false; // 有一种必须为4张
+    var daier = true; // 带的两个都为对子
+    for (var j in a) {
+      count++;
+      if (a[j] === 4) is4 = true;
+      else {
+        if (a[j] !== 2) daier = false;
       }
     }
     return is4 && daier && count === 3;

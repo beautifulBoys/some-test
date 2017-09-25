@@ -88,17 +88,138 @@ var funcObj = {
     }
     return newArr;
   },
-  sandaiyi: function (arr, obj) {
-
+  sandaiyi: function (arr, obj, val) {
+    var dan = [];
+    for (let j in obj) {
+      if (obj[j] === 1) dan.push(j - 0);
+    }
+    var newArr = [];
+    for (let k in obj) {
+      k = k - 0;
+      if (obj[k] >= 3 && k > val) {
+        var newar = [];
+        var index = 0;
+        for (let w = 0; w < arr.length; w++) {
+          if (arr[w].value === k) {
+            if (index < 3) {
+              newar.push(arr[w]);
+              if (index === 2) {
+                for (let o = 0; o < arr.length; o++) { // 查一个单牌
+                  if (arr[o].value === dan[0]) {
+                    newar.push(arr[o]);
+                    break;
+                  }
+                }
+              }
+              index++;
+            }
+          }
+        }
+        newArr.push(newar);
+      }
+    }
+    return newArr;
   },
-  sandaiyidui: function (arr, obj) {
-
+  sandaiyidui: function (arr, obj, val) {
+    var dui = [];
+    for (let j in obj) {
+      if (obj[j] === 2) dui.push(j - 0);
+    }
+    var newArr = [];
+    for (let k in obj) {
+      k = k - 0;
+      if (obj[k] >= 3 && k > val) {
+        var newar = [];
+        var index = 0;
+        for (let w = 0; w < arr.length; w++) {
+          if (arr[w].value === k) {
+            if (index < 3) {
+              newar.push(arr[w]);
+              if (index === 2) {
+                for (let o = 0; o < arr.length; o++) { // 查一个单牌
+                  if (arr[o].value === dui[0]) newar.push(arr[o]);
+                }
+              }
+              index++;
+            }
+          }
+        }
+        newArr.push(newar);
+      }
+    }
+    return newArr;
   },
-  sidaier: function (arr, obj) {
-
+  sidaier: function (arr, obj, val) {
+    var dan = [];
+    for (let j in obj) {
+      if (obj[j] === 1) dan.push(j - 0);
+    }
+    var newArr = [];
+    for (let k in obj) {
+      k = k - 0;
+      if (obj[k] === 4 && k > val && dan.length > 1) {
+        var newar = [];
+        var index = 0;
+        for (let w = 0; w < arr.length; w++) {
+          if (arr[w].value === k) {
+            if (index < 4) {
+              newar.push(arr[w]);
+              if (index === 3) {
+                for (let o = 0; o < arr.length; o++) { // 查一个单牌
+                  if (arr[o].value === dan[0] || arr[o].value === dan[1]) newar.push(arr[o]);
+                }
+              }
+              index++;
+            }
+          }
+        }
+        newArr.push(newar);
+      }
+    }
+    return newArr;
   },
-  sange: function (arr, obj) {
-
+  sidailiangdui: function (arr, obj, val) {
+    var dui = [];
+    for (let j in obj) {
+      if (obj[j] === 2) dui.push(j - 0);
+    }
+    var newArr = [];
+    for (let k in obj) {
+      k = k - 0;
+      if (obj[k] === 4 && k > val && dui.length > 1) {
+        var newar = [];
+        var index = 0;
+        for (let w = 0; w < arr.length; w++) {
+          if (arr[w].value === k) {
+            if (index < 4) {
+              newar.push(arr[w]);
+              if (index === 3) {
+                for (let o = 0; o < arr.length; o++) { // 查一个单牌
+                  if (arr[o].value === dui[0] || arr[o].value === dui[1]) newar.push(arr[o]);
+                }
+              }
+              index++;
+            }
+          }
+        }
+        newArr.push(newar);
+      }
+    }
+    return newArr;
+  },
+  sange: function (arr, obj, val) {
+    var newArr = [];
+    for (let k in obj) {
+      k = k - 0;
+      if (obj[k] === 3 && k > val) {
+        var newar = [];
+        for (let w = 0; w < arr.length; w++) {
+          if (arr[w].value === k) newar.push(arr[w]);
+        }
+        newArr.push(newar);
+      }
+    }
+    return newArr;
   },
   feiji: function (arr, obj) {
 
@@ -107,9 +228,6 @@ var funcObj = {
 
   },
   zhadan: function (arr, obj) {
-
-  },
-  sidailiangdui: function (arr, obj) {
 
   }
 };
