@@ -40,7 +40,7 @@ var funcObj = {
     }
     return newArr2;
   },
-  dui: function (arr, obj, val) { // val 同上
+  dui: function (arr, obj, val) { // val 就是单牌的时候的 值
     var newArr1 = [];
     var newArr2 = [];
     for (var i in obj) {
@@ -60,39 +60,33 @@ var funcObj = {
     return newArr2;
   },
   shunzi: function (arr, obj, firVal, length) {
-    function fn (k) { // 探测顺子的初始值
-      return obj[k];
-    }
-    function pushVal (i) {
-      var a = [];
-      for (let h = 0; h < length; h++) {
-        for (let y = 0; y < length; y++) {
-          if (arr[y].value === i) {
-            a.push(arr[y]);
-            break;
-          }
+    let newArr = [];
+    for (let k in obj) {
+      k = k - 0;
+      if (k > firVal) { // 可以作为开始值 // 可以去探测是否有连续length长度的顺子存在
+        let sign1 = true;
+        let index = k + 0;
+        for (let i = 0; i < length; i++) { // 循环length次，判断是否有该张牌
+          if (obj[index]) index++;
+          else sign1 = false; // 不存在就设置为false
         }
-        i++;
-      }
-      console.log(a);
-      return a;
-    }
-    var newArr1 = [];
-    for (let i in obj) {
-      if (i - 0 > firVal) {
-        var sign = true;
-        for (let j = 0; j < length; j++) {
-          if (!fn(i - 0 + j)) {
-            sign = false;
-            break;
+        if (sign1) { // 存在大于的连续顺子
+          let newar = [];
+          let aaa = k;
+          for (let j = 0; j < length; j++) { // 控制长度
+            for (let m = 0; m < arr.length; m++) {
+              if (arr[m].value === aaa) {
+                newar.push(arr[m]);
+                aaa++;
+                break;
+              }
+            }
           }
-        }
-        if (sign) {
-          newArr1.push(pushVal(i - 0));
+          newArr.push(newar);
         }
       }
     }
-    return newArr1;
+    return newArr;
   },
   sandaiyi: function (arr, obj) {
 
