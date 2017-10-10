@@ -34,7 +34,8 @@
     },
     computed: {
       ...mapState({
-        start: state => state.desk.start
+        start: state => state.desk.start,
+        deskStatus: state => state.desk.deskStatus
       }),
       ...mapGetters([]),
       ...mapMutations([])

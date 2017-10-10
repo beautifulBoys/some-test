@@ -8,6 +8,7 @@ import io from 'socket.io-client';
 export default {
   state: {
     httpServer: null,
+    start: false,
     deskStatus: ['start', false, 'jiaodizhu', 'chupai', 'jieshu'],
     timeObj: {
       chupai: 20,
@@ -119,6 +120,7 @@ export default {
     },
     chupaiEvent (state) {
       state.info.mine.desk.chupaiObj.cardShow = true;
+      state.info.mine.desk.chupaiObj.status = false;
       state.info.mine.desk.active = [];
       var mine = state.info.mine.desk.cards;
       var mineNew = [];
@@ -179,7 +181,7 @@ function client (state, httpServer) {
       for (var k = 0; k < info.arr[j].length; k++) {
         b += info.arr[j][k].text.toString() + ' ';
       }
-      b += '　 　 ';
+      b += '　 ';
     }
     console.log(a + '\n' + b);
   });

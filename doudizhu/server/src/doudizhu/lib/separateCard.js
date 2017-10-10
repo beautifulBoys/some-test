@@ -18,7 +18,9 @@ function sortSmall (arr) {
 //   8: '连对',      is_liandui
 //   9: '炸弹',      is_zhadan
 //   10: '王炸',     is_wangzha
-//   11: '四带两对'  is_sidaier
+//   11: '四带两对',  is_sidaier
+//   12: '飞机带单',
+//   13: '飞机带对'
 // };
 function sortValue () {
 
@@ -221,14 +223,144 @@ var funcObj = {
     }
     return newArr;
   },
-  feiji: function (arr, obj) {
-
+  feiji: function (arr, obj, val, length) {
+    var a = {};
+    let cou = 0;
+    for (let i in obj) {
+      if (obj[i] === 3 && i - 0 > val) {
+        a[i] = 3;
+        cou++;
+      }
+    }
+    let newArr = [];
+    if (cou > 1 && cou >= length) {
+      for (let k in a) {
+        k = k - 0;
+        let sign = true;
+        let index = k;
+        for (let j = 0; j < length; j++) {
+          if (a[index]) index++;
+          else sign = false;
+        }
+        if (sign) {
+          let cc = [];
+          for (let hh = 0; hh < length; hh++) {
+            for (let w = 0; w < arr.length; w++) {
+              if (k + hh === arr[w].value) cc.push(arr[w]);
+            }
+          }
+          newArr.push(sortSmall(cc));
+        }
+      }
+    }
+    return newArr;
   },
-  liandui: function (arr, obj) {
-
+  feijidaidan: function (arr, obj, val, length) {
+    let newArr = this.feiji(arr, obj, val, length);
+    let dan = [];
+    for (let j in obj) {
+      if (obj[j] === 1) dan.push(j - 0);
+    }
+    if (dan.length >= length) {
+      for (let i = 0; i < newArr.length; i++) {
+        for (let y = 0; y < length; y++) {
+          for (let m = 0; m < arr.length; m++) {
+            if (arr[m].value === dan[y]) {
+              newArr[i].push(arr[m]);
+              break;
+            }
+          }
+        }
+      }
+    } else newArr = [];
+    return newArr;
   },
-  zhadan: function (arr, obj) {
-
+  feijidaidui: function (arr, obj, val, length) {
+    let newArr = this.feiji(arr, obj, val, length);
+    let dui = [];
+    for (let j in obj) {
+      if (obj[j] === 2) dui.push(j - 0);
+    }
+    if (dui.length >= length) {
+      for (let i = 0; i < newArr.length; i++) {
+        for (let y = 0; y < length; y++) {
+          for (let m = 0; m < arr.length; m++) {
+            if (arr[m].value === dui[y]) {
+              newArr[i].push(arr[m]);
+            }
+          }
+        }
+      }
+    } else newArr = [];
+    return newArr;
+  },
+  liandui: function (arr, obj, val, length) {
+    let dui = [];
+    let o = {};
+    for (let j in obj) {
+      j = j - 0;
+      if (obj[j] >= 2 && j > val) {
+        o[j] = true;
+        dui.push(j);
+      }
+    }
+    let newArr = [];
+    for (let i = 0; i < dui.length; i++) {
+      let sign = true;
+      let w = dui[i] + 0;
+      for (let k = 0; k < length; k++) {
+        if (o[w]) w++;
+        else {
+          sign = false;
+          break;
+        }
+      }
+      if (sign) {
+        let arrItem = [];
+        for (let h = 0; h < length; h++) {
+          let index = 0;
+          for (let e = 0; e < arr.length; e++) {
+            if (arr[e].value === dui[i] + h && index < 2) {
+              arrItem.push(arr[e]);
+              index++;
+            }
+          }
+        }
+        newArr.push(arrItem);
+      }
+    }
+    return newArr;
+  },
+  zhadan: function (arr, obj, val) {
+    let o = [];
+    for (let j in obj) {
+      j = j - 0;
+      if (obj[j] === 4 && j > val) o.push(j);
+    }
+    let newArr = [];
+    for (let e = 0; e < o.length; e++) {
+      var item = [];
+      for (let k = 0; k < arr.length; k++) {
+        if (arr[k].value === o[e]) {
+          item.push(arr[k]);
+        }
+      }
+      newArr.push(item);
+    }
+    return newArr;
+  },
+  wangzha: function (arr, obj) {
+    let newArr = [];
+    if (obj[17] && obj[18]) {
+      let item = [];
+      for (let i = 0; i < arr.length; i++) {
+        if (arr[i].value === 18 || arr[i].value === 17) {
+          item.push(arr[i]);
+        }
+      }
+      newArr.push(item);
+    }
+    return newArr;
   }
 };
 

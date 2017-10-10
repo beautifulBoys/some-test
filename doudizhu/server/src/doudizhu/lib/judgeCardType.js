@@ -11,7 +11,9 @@ const cardTypeMap = {
   8: '连对',
   9: '炸弹',
   10: '王炸',
-  11: '四带两对'
+  11: '四带两对',
+  12: '飞机带单',
+  13: '飞机带对'
 };
 function sortSmall (arr) {
   return arr.sort((a, b) => {
@@ -113,6 +115,41 @@ var obj = {
     return sign;
   },
   is_feiji: function (arr) {
+    if (arr.length < 6 || arr.length % 3 !== 0) return false;
+    var a = {};
+    for (var i = 0; i < arr.length; i++) { // 遍历到 a 对象上 {7:3, 8:3, 9:3}
+      if (a[arr[i].value]) a[arr[i].value]++;
+      else {
+        a[arr[i].value] = 1;
+      }
+    }
+    var newa = []; // [6, 7, 8]
+    let sign = true;
+    for (var j in a) {
+      if (a[j] === 3) newa.push({value: j - 0});
+      else sign = false;
+    }
+    if (newa.length > 1 && this.is_shunzi(newa) && sign) return true;
+    else return false;
+  },
+  is_feijidaidan: function (arr) {
+    if (arr.length < 8 || arr.length % 4 !== 0) return false;
+    var a = {};
+    for (var i = 0; i < arr.length; i++) { // 遍历到 a 对象上 {7:3, 8:3, 9:3, 4:1, 5:1: 6:1}
+      if (a[arr[i].value]) a[arr[i].value]++;
+      else a[arr[i].value] = 1;
+    }
+    var newa = []; // [6, 7, 8]
+    var newb = []; // [3, 5, 9]        []
+    for (var j in a) {
+      j = j - 0;
+      if (a[j] === 3) newa.push({value: j});
+      else newb.push({value: j});
+    }
+    if (newa.length > 1 && newb.length === newa.length && this.is_shunzi(newa)) return true;
+    else return false;
+  },
+  is_feijidaidui: function (arr) {
     if (arr.length >= 6) {
         var a = {};
         for (var i = 0; i < arr.length; i++) { // 遍历到 a 对象上 {7:3, 8:3, 9:3, 4:1, 5:1: 6:1}
@@ -179,7 +216,7 @@ function judgeCardType (active) { // 判断出的是什么类型的牌
     else console.log('判断类型出错了', active);
   } else if (length === 8) {
     if (obj.is_shunzi(active)) type = 2;
-    else if (obj.is_feiji(active)) type = 7;
+    else if (obj.is_feijidaidan(active)) type = 12;
     else if (obj.is_liandui(active)) type = 8;
     else if (obj.is_sidailiangdui(active)) type = 11;
     else console.log('判断类型出错了', active);
@@ -190,7 +227,7 @@ function judgeCardType (active) { // 判断出的是什么类型的牌
   } else if (length === 10) {
     if (obj.is_shunzi(active)) type = 2;
     else if (obj.is_liandui(active)) type = 8;
-    else if (obj.is_feiji(active)) type = 7;
+    else if (obj.is_feijidaidui(active)) type = 13;
     else console.log('判断类型出错了', active);
   } else if (length === 11) {
     if (obj.is_shunzi(active)) type = 2;
@@ -198,6 +235,7 @@ function judgeCardType (active) { // 判断出的是什么类型的牌
   } else if (length === 12) {
     if (obj.is_shunzi(active)) type = 2;
     else if (obj.is_feiji(active)) type = 7;
+    else if (obj.is_feijidaidan(active)) type = 12;
     else if (obj.is_liandui(active)) type = 8;
     else console.log('判断类型出错了', active);
   } else if (length === 13) {
@@ -209,10 +247,12 @@ function judgeCardType (active) { // 判断出的是什么类型的牌
     else console.log('判断类型出错了', active);
   } else if (length === 15) {
     if (obj.is_shunzi(active)) type = 2;
+    else if (obj.is_feiji(active)) type = 7;
+    else if (obj.is_feijidaidui(active)) type = 13;
     else console.log('判断类型出错了', active);
   } else if (length === 16) {
     if (obj.is_shunzi(active)) type = 2;
-    else if (obj.is_feiji(active)) type = 7;
+    else if (obj.is_feijidaidan(active)) type = 12;
     else if (obj.is_liandui(active)) type = 8;
     else console.log('判断类型出错了', active);
   } else if (length === 17) {
@@ -221,13 +261,15 @@ function judgeCardType (active) { // 判断出的是什么类型的牌
   } else if (length === 18) {
     if (obj.is_shunzi(active)) type = 2;
     else if (obj.is_liandui(active)) type = 8;
+    else if (obj.is_feiji(active)) type = 7;
     else console.log('判断类型出错了', active);
   } else if (length === 19) {
     if (obj.is_shunzi(active)) type = 2;
     else console.log('判断类型出错了', active);
   } else if (length === 20) {
     if (obj.is_shunzi(active)) type = 2;
-    else if (obj.is_feiji(active)) type = 7;
+    else if (obj.is_feijidaidan(active)) type = 12;
+    else if (obj.is_feijidaidui(active)) type = 13;
     else if (obj.is_liandui(active)) type = 8;
     else console.log('判断类型出错了', active);
   } else {
